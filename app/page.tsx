@@ -40,6 +40,7 @@ export default function HomePage() {
   }, [filters]);
 
   const handleFiltersChange = (newFilters: {
+    search?: string;
     minPrice?: number;
     maxPrice?: number;
     bedrooms?: number;

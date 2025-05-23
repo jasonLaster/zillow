@@ -5,6 +5,7 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 
 interface SearchFiltersProps {
   onFiltersChange: (filters: {
+    search?: string;
     minPrice?: number;
     maxPrice?: number;
     bedrooms?: number;
@@ -16,6 +17,7 @@ interface SearchFiltersProps {
 export default function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
+    search: '',
     minPrice: '',
     maxPrice: '',
     bedrooms: '',
@@ -29,12 +31,14 @@ export default function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
     
     // Convert to API format
     const apiFilters: {
+      search?: string;
       minPrice?: number;
       maxPrice?: number;
       bedrooms?: number;
       bathrooms?: number;
       propertyType?: string;
     } = {};
+    if (newFilters.search) apiFilters.search = newFilters.search;
     if (newFilters.minPrice) apiFilters.minPrice = parseInt(newFilters.minPrice);
     if (newFilters.maxPrice) apiFilters.maxPrice = parseInt(newFilters.maxPrice);
     if (newFilters.bedrooms) apiFilters.bedrooms = parseInt(newFilters.bedrooms);
@@ -46,6 +50,7 @@ export default function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
 
   const clearFilters = () => {
     setFilters({
+      search: '',
       minPrice: '',
       maxPrice: '',
       bedrooms: '',
@@ -63,7 +68,9 @@ export default function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
-            placeholder="Search Oakland, CA"
+            value={filters.search}
+            onChange={(e) => handleFilterChange('search', e.target.value)}
+            placeholder="Search by address, neighborhood..."
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>

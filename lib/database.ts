@@ -219,6 +219,7 @@ export function getPropertyByZpid(zpid: string): GeneratedProperty | null {
 }
 
 export function searchProperties({
+  search,
   minPrice,
   maxPrice,
   bedrooms,
@@ -227,6 +228,7 @@ export function searchProperties({
   limit = 20,
   offset = 0
 }: {
+  search?: string;
   minPrice?: number;
   maxPrice?: number;
   bedrooms?: number;
@@ -237,6 +239,12 @@ export function searchProperties({
 } = {}): GeneratedProperty[] {
   let query = 'SELECT * FROM properties WHERE 1=1';
   const params: (string | number)[] = [];
+
+  if (search) {
+    query += ' AND (address LIKE ? OR city LIKE ?)';
+    const searchPattern = `%${search}%`;
+    params.push(searchPattern, searchPattern);
+  }
 
   if (minPrice !== undefined) {
     query += ' AND price >= ?';

@@ -5,6 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     
+    const search = searchParams.get('search') || undefined;
     const minPrice = searchParams.get('minPrice') ? parseInt(searchParams.get('minPrice')!) : undefined;
     const maxPrice = searchParams.get('maxPrice') ? parseInt(searchParams.get('maxPrice')!) : undefined;
     const bedrooms = searchParams.get('bedrooms') ? parseInt(searchParams.get('bedrooms')!) : undefined;
@@ -14,6 +15,7 @@ export async function GET(request: NextRequest) {
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : 0;
 
     const properties = searchProperties({
+      search,
       minPrice,
       maxPrice,
       bedrooms,
